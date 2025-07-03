@@ -1,6 +1,6 @@
 # CoA Matchmaking
 
-Implementation of our own matchmaking queue according to [this](https://chromaway.atlassian.net/wiki/spaces/CGD/pages/225018014/Battles+Matchmaking) design.
+Implementation of our own matchmaking queue.
 
 ## Deployment
 
