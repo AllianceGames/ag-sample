@@ -19,7 +19,7 @@
       </Reference>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="PostchainClient" Version="0.7.2" />
+      <PackageReference Include="PostchainClient" Version="0.7.3" />
       <PackageReference Include="System.Threading.Channels" Version="9.0.1" />
       <PackageReference Include="StackExchange.Redis" Version="2.8.41" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
