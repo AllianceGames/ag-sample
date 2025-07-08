@@ -331,11 +331,6 @@
             Gets the port for health checks.
             </summary>
         </member>
-        <member name="P:AllianceGamesSdk.Server.INodeConfig.SessionPath">
-            <summary>
-            Gets the session file path.
-            </summary>
-        </member>
         <member name="P:AllianceGamesSdk.Server.INodeConfig.RedisUrl">
             <summary>
             Gets the Redis URL.
@@ -425,9 +420,6 @@
         <member name="P:AllianceGamesSdk.Server.NodeConfigBase.HealthPort">
             <inheritdoc />
         </member>
-        <member name="P:AllianceGamesSdk.Server.NodeConfigBase.SessionPath">
-            <inheritdoc />
-        </member>
         <member name="P:AllianceGamesSdk.Server.NodeConfigBase.IsWitness">
             <inheritdoc />
         </member>
@@ -497,7 +489,7 @@
             Gets the file system abstraction used by this configuration.
             </summary>
         </member>
-        <member name="M:AllianceGamesSdk.Server.InjectedNodeConfig.#ctor(System.String,System.String,AllianceGamesSdk.Server.Node,System.Collections.Generic.HashSet{AllianceGamesSdk.Server.Client},System.Collections.Generic.HashSet{AllianceGamesSdk.Server.Node},Chromia.ISignatureProvider,Serilog.ILogger,System.Nullable{System.Int32},System.String,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.IO.Abstractions.IFileSystem,System.Nullable{Chromia.Buffer})">
+        <member name="M:AllianceGamesSdk.Server.InjectedNodeConfig.#ctor(System.String,System.String,AllianceGamesSdk.Server.Node,System.Collections.Generic.HashSet{AllianceGamesSdk.Server.Client},System.Collections.Generic.HashSet{AllianceGamesSdk.Server.Node},Chromia.ISignatureProvider,Serilog.ILogger,System.Nullable{System.Int32},System.String,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.IO.Abstractions.IFileSystem,System.Nullable{Chromia.Buffer})">
             <summary>
             Initializes a new instance of the InjectedNodeConfig class.
             </summary>
@@ -517,7 +509,6 @@
             <param name="connectionTimeoutMs">Timeout for connection attempts.</param>
             <param name="connectionRetries">Number of connection retry attempts.</param>
             <param name="connectionRetryTimeoutMs">Timeout between connection retries.</param>
-            <param name="sessionPath">Optional path for session files.</param>
             <param name="fileSystem">Optional file system abstraction.</param>
             <param name="pubKey">Optional public key override.</param>
         </member>
