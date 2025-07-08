@@ -23,18 +23,9 @@ internal class Logic
     private TaskCompletionSource<Messages.MoveResponse>? moveTcs;
 
     private readonly Messages.Field[,] board = new Messages.Field[3, 3];
-    private bool gameOver = false;
 
-    public Logic(INodeConfig config)
+    public Logic(AllianceGamesServer server)
     {
-        var server = AllianceGamesServer.Create(
-            new WebSocketTransport(config.Logger),
-            config
-        );
-        if (server == null)
-        {
-            throw new Exception("Failed to create server");
-        }
         this.server = server;
         Log.Logger = server.Logger;
 
@@ -49,16 +40,8 @@ internal class Logic
         await GameOver(winnerField, true);
     }
 
-    public async Task Run()
+    public async Task<string> Run()
     {
-        var result = await server.Start(CancellationToken);
-
-        if (server == null)
-        {
-            Log.Error("Failed to create server");
-            return;
-        }
-
         try
         {
             Log.Information($"Initializing players");
@@ -82,7 +65,7 @@ internal class Logic
                     CancellationToken
                 );
                 // finally calls stop, so we don't need to do anything
-                return;
+                return "";
             }
             finally
             {
@@ -141,14 +124,12 @@ internal class Logic
                 CancellationToken
             );
 
-            await GameOver(winner.Value, false);
+            return await GameOver(winner.Value, false);
         }
         catch (WebSocketException) { }
         catch (OperationCanceledException) { }
-        finally
-        {
-            await Stop(null);
-        }
+
+        return "";
     }
 
     private void InitializePlayers()
@@ -171,9 +152,8 @@ internal class Logic
         initCs.SetResult();
     }
 
-    private async Task GameOver(Messages.Field winner, bool isForfeit)
+    private async Task<string> GameOver(Messages.Field winner, bool isForfeit)
     {
-        gameOver = true;
         Buffer? winnerPlayer = winner == Messages.Field.Empty ? null : players[(int)winner - 1];
         Log.Information($"Game is over, winner is {winnerPlayer?.Parse()}, forfeit: {isForfeit}");
         await server!.Send(
@@ -203,7 +183,7 @@ internal class Logic
 
         blockchainReward.RemoveAll(r => r.PubKey == AI_ADDRESS);
 
-        await Stop(JsonConvert.SerializeObject(blockchainReward));
+        return JsonConvert.SerializeObject(blockchainReward);
     }
 
     private Messages.Field GetField(Buffer? player) =>
@@ -335,27 +315,6 @@ internal class Logic
 
         server.OnClientConnect += address => Log.Information($"Player {address.Parse()} connected");
         server.OnClientDisconnect += address => Log.Information($"Player {address.Parse()} disconnected");
-    }
-
-    private async Task Stop(string? reward)
-    {
-        if (server.IsRunning)
-        {
-            await Task.Delay(1000);
-            await server.Stop(reward);
-        }
-
-        try
-        {
-            cts.Cancel();
-            cts.Dispose();
-        }
-        catch (Exception)
-        { }
-        finally
-        {
-            Environment.Exit(0);
-        }
     }
 
     private Messages.Field? GetWinner()

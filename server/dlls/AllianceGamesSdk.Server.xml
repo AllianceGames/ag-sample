@@ -73,15 +73,6 @@
             </summary>
             <exception cref="T:System.InvalidOperationException">Thrown when the random generator is not accessible during health check.</exception>
         </member>
-        <member name="M:AllianceGamesSdk.Server.AllianceGamesServer.Finalize">
-            <summary>
-            Finalizer that ensures proper cleanup of server resources.
-            </summary>
-            <remarks>
-            Logs a fatal error and attempts to cancel any pending operations if the server was not properly stopped.
-            To avoid this, always call Stop() before letting the server instance be garbage collected.
-            </remarks>
-        </member>
         <member name="M:AllianceGamesSdk.Server.AllianceGamesServer.Create(AllianceGamesSdk.Common.Transport.ITransport,AllianceGamesSdk.Server.INodeConfig,AllianceGamesSdk.Common.Transport.IHttpClient)">
             <summary>
             Creates a new instance of the AllianceGamesServer.
@@ -91,12 +82,18 @@
             <param name="httpClient">Optional HTTP client implementation. If null, a default implementation will be used.</param>
             <returns>A new AllianceGamesServer instance, or null if configuration could not be loaded.</returns>
         </member>
-        <member name="M:AllianceGamesSdk.Server.AllianceGamesServer.Start(System.Threading.CancellationToken)">
+        <member name="M:AllianceGamesSdk.Server.AllianceGamesServer.Run(System.Func{System.Threading.Tasks.Task{System.String}})">
             <summary>
             Starts the server and initializes all network connections.
             </summary>
-            <param name="ct">Cancellation token to stop the server startup process.</param>
-            <returns>True if the server started successfully, false otherwise.</returns>
+            <param name="entrypoint">Entrypoint of the game. Must return the game result as a JSON string.</param>
+            <returns>A task that completes when the game is finished.</returns>
+        </member>
+        <member name="M:AllianceGamesSdk.Server.AllianceGamesServer.UseProfiler(AllianceGamesSdk.Server.Profiler.ProfilerSystemResourceType[])">
+            <summary>
+            Enables profiling of specific system resources.
+            </summary>
+            <param name="profilerSystemResourceTypes">Array of system resource types to profile. If empty, all types will be profiled.</param>
         </member>
         <member name="M:AllianceGamesSdk.Server.AllianceGamesServer.Send(System.UInt32,Chromia.Buffer,System.Threading.CancellationToken)">
             <summary>
@@ -152,18 +149,6 @@
             <param name="milliseconds">Duration of the timeout in milliseconds.</param>
             <param name="ct">Optional cancellation token to cancel the timeout.</param>
             <returns>An ITimeout object that can be used to cancel the timeout.</returns>
-        </member>
-        <member name="M:AllianceGamesSdk.Server.AllianceGamesServer.Stop(System.String)">
-            <summary>
-            Stops the server and writes the final proof to disk.
-            </summary>
-            <param name="resultJson">Optional JSON string containing final game state or results.</param>
-            <returns>A task that completes when the server has fully stopped.</returns>
-        </member>
-        <member name="M:AllianceGamesSdk.Server.AllianceGamesServer.Dispose">
-            <summary>
-            Releases all resources used by the server.
-            </summary>
         </member>
         <member name="T:AllianceGamesSdk.Server.AllianceGamesServerExtensions">
             <summary>
@@ -351,6 +336,16 @@
             Gets the session file path.
             </summary>
         </member>
+        <member name="P:AllianceGamesSdk.Server.INodeConfig.RedisUrl">
+            <summary>
+            Gets the Redis URL.
+            </summary>
+        </member>
+        <member name="P:AllianceGamesSdk.Server.INodeConfig.RedisChannel">
+            <summary>
+            Gets the Redis channel.
+            </summary>
+        </member>
         <member name="M:AllianceGamesSdk.Server.INodeConfig.SessionData``2">
             <summary>
             Gets the session data for the specified types.
@@ -445,6 +440,12 @@
             </summary>
         </member>
         <member name="P:AllianceGamesSdk.Server.NodeConfigBase.InHealthCheck">
+            <inheritdoc />
+        </member>
+        <member name="P:AllianceGamesSdk.Server.NodeConfigBase.RedisUrl">
+            <inheritdoc />
+        </member>
+        <member name="P:AllianceGamesSdk.Server.NodeConfigBase.RedisChannel">
             <inheritdoc />
         </member>
         <member name="P:AllianceGamesSdk.Server.NodeConfigBase.InitializationTimeoutMs">
@@ -548,6 +549,26 @@
             <param name="sessionSignatureProvider">Provider for cryptographic operations.</param>
             <param name="logger">Logger instance.</param>
             <param name="timeout">Optional timeout duration in milliseconds. Defaults to 300000.</param>
+        </member>
+        <member name="T:AllianceGamesSdk.Server.Profiler.ProfilerSystemResourceType">
+            <summary>
+            Enumerates the types of system resources that can be monitored and analyzed.
+            </summary>
+        </member>
+        <member name="F:AllianceGamesSdk.Server.Profiler.ProfilerSystemResourceType.Cpu">
+            <summary>
+            CPU resource type, monitoring processor usage, throttling events, and quota limits.
+            </summary>
+        </member>
+        <member name="F:AllianceGamesSdk.Server.Profiler.ProfilerSystemResourceType.Memory">
+            <summary>
+            Memory resource type, tracking allocation, usage patterns, and memory limits.
+            </summary>
+        </member>
+        <member name="F:AllianceGamesSdk.Server.Profiler.ProfilerSystemResourceType.Bandwidth">
+            <summary>
+            Network bandwidth resource type, analyzing data transfer rates, throttling, and connection quality.
+            </summary>
         </member>
         <member name="T:AllianceGamesSdk.Server.IRandom">
             <inheritdoc cref="T:System.Random"/>

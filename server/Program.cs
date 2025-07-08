@@ -1,5 +1,5 @@
-﻿using AllianceGamesSdk.Common;
-using AllianceGamesSdk.Server;
+﻿using AllianceGamesSdk.Server;
+using AllianceGamesSdk.Transport.WebSocket;
 using Chromia;
 using Serilog;
 using Buffer = Chromia.Buffer;
@@ -31,7 +31,15 @@ var config = new InjectedNodeConfig(
     logger
 );
 
+var server = AllianceGamesServer.Create(
+    new WebSocketTransport(config.Logger),
+    config
+);
 
-var logic = new Logic(config);
-await logic.Run();
-await logger.DisposeAsync();
+if (server == null)
+{
+    throw new Exception("Failed to create server");
+}
+
+var logic = new Logic(server);
+await server.Run(logic.Run);
