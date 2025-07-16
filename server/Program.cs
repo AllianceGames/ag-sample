@@ -41,5 +41,11 @@ if (server == null)
     throw new Exception("Failed to create server");
 }
 
+server.OnTerminationWarning += () =>
+{
+    Log.Warning("Server is about to be terminated");
+    return Task.CompletedTask;
+};
+
 var logic = new Logic(server);
 await server.Run(logic.Run);
