@@ -1,5 +1,5 @@
 blockchains:
-  TicTacToeTestnet:
+  TicTacToe:
     module: ${MAIN_MODULE}
 
     moduleArgs: &args

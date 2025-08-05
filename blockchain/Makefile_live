@@ -70,7 +70,7 @@ deploy-testnet: setenv
 	docker run -it --rm -v ${PWD}/rell:/usr/app \
 	registry.gitlab.com/chromaway/core-tools/chromia-cli/chr:${CHR_CLI_VERSION} chr deployment create \
 	--network testnet \
-	--blockchain TicTacToeTestnet \
+	--blockchain TicTacToe \
 	--secret /usr/app/config/.secret_${ENV}
 
 PHONY: update-testnet
@@ -78,7 +78,7 @@ update-testnet: setenv
 	docker run -it --rm -v ${PWD}/rell:/usr/app \
 	registry.gitlab.com/chromaway/core-tools/chromia-cli/chr:${CHR_CLI_VERSION} chr deployment update \
 	--network testnet \
-	--blockchain TicTacToeTestnet \
+	--blockchain TicTacToe \
 	--secret /usr/app/config/.secret_${ENV}
 
 PHONY: info-testnet
@@ -86,12 +86,12 @@ info-testnet: setenv
 	docker run -it --rm -v ${PWD}/rell:/usr/app \
 	registry.gitlab.com/chromaway/core-tools/chromia-cli/chr:${CHR_CLI_VERSION} chr deployment info \
 	--network testnet \
-	--blockchain TicTacToeTestnet
+	--blockchain TicTacToe
 
 PHONY: remove-testnet
 remove-testnet: setenv
 	docker run -it --rm -v ${PWD}/rell:/usr/app \
 	registry.gitlab.com/chromaway/core-tools/chromia-cli/chr:${CHR_CLI_VERSION} chr deployment remove \
 	--network testnet \
-	--blockchain TicTacToeTestnet \
+	--blockchain TicTacToe \
 	--secret /usr/app/config/.secret_${ENV}
