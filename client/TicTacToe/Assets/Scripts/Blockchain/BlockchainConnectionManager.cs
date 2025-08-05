@@ -23,12 +23,12 @@ public struct BlockchainConfig
 #else
         return new()
         {
-            Brid = "4FC7F780620D35B0BAE620DA69DC1476AA676AE7F11A640C65D88127EFFAA08B",
+            Brid = "E1EEB672E5CA8750A63C5BAF713069A06E06ED4B7FAA7A7F964EBD7042100669",
             NodeUrls = new[]
             {
                 "https://node6.testnet.chromia.com",
                 "https://node7.testnet.chromia.com",
-                "https://node8.testnet.chromia.com
+                "https://node8.testnet.chromia.com"
             }
         };
 #endif
