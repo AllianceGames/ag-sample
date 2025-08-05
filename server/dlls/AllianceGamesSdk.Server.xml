@@ -448,6 +448,9 @@
         <member name="P:AllianceGamesSdk.Server.NodeConfigBase.InitializationTimeoutMs">
             <inheritdoc />
         </member>
+        <member name="P:AllianceGamesSdk.Server.NodeConfigBase.InitializationRetries">
+            <inheritdoc />
+        </member>
         <member name="P:AllianceGamesSdk.Server.NodeConfigBase.ConnectionTimeoutMs">
             <inheritdoc />
         </member>
