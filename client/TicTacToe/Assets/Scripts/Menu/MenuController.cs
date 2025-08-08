@@ -11,12 +11,6 @@ public class MenuController
 {
     public event Action<Queries.EifEventData[]> OnClaim;
 
-    private readonly string DUID = null;
-    private readonly string DISPLAY_NAME = "TicTacToe";
-
-    private readonly string AI_QUEUE_NAME = "1Vs1";
-    private readonly string PVP_QUEUE_NAME = "pvp";
-
     private readonly MenuView view;
     private readonly IMatchmakingService matchmakingService;
     private readonly BlockchainConnectionManager connectionManager;
@@ -38,7 +32,7 @@ public class MenuController
         this.connectionManager = connectionManager;
         this.accountManager = accountManager;
         this.OnStartGame = OnStartGame;
-        this.duid = DUID;
+        this.duid = Config.DUID;
 
         matchmakingService = MatchmakingServiceFactory.Get(connectionManager.AlliancesGamesClient);
 
@@ -67,12 +61,12 @@ public class MenuController
 
     public void OpenPvEMatchmaking()
     {
-        OnPlay(AI_QUEUE_NAME);
+        OnPlay(Config.AI_QUEUE_NAME);
     }
 
     public void OpenPvPMatchmaking()
     {
-        OnPlay(PVP_QUEUE_NAME);
+        OnPlay(Config.PVP_QUEUE_NAME);
     }
 
     public async UniTask UpdatePlayerInfo()
@@ -83,11 +77,11 @@ public class MenuController
         var tttUpdate = await Queries.GetPlayerUpdate(connectionManager.TicTacToeClient, Buffer.From(address));
         unclaimedRewards = await accountManager.GetUnclaimedEifEvents();
 
-        duid ??= await MatchmakingService.GetDuid(connectionManager.AlliancesGamesClient, DISPLAY_NAME, CancellationToken.None);
+        duid ??= await MatchmakingService.GetDuid(connectionManager.AlliancesGamesClient, Config.DISPLAY_NAME, CancellationToken.None);
         var playersInQueue = await matchmakingService.GetAmountTicketsInQueue(new()
         {
             Duid = duid,
-            QueueName = PVP_QUEUE_NAME
+            QueueName = Config.PVP_QUEUE_NAME
         }, CancellationToken.None);
 
         var balanceString = accountManager.Account.Balance == BigInteger.Zero ? "0 (Get TBNB from faucet)" : accountManager.Balance;
