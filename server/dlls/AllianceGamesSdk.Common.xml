@@ -15,11 +15,6 @@
             Default timeout in milliseconds for initialization operations.
             </summary>
         </member>
-        <member name="F:AllianceGamesSdk.Common.IConfig.DEFAULT_INITIALIZATION_RETRIES">
-            <summary>
-            Default number of initialization retry attempts.
-            </summary>
-        </member>
         <member name="F:AllianceGamesSdk.Common.IConfig.DEFAULT_CONNECTION_TIMEOUT_MS">
             <summary>
             Default timeout in milliseconds for connection attempts.
@@ -78,11 +73,6 @@
         <member name="P:AllianceGamesSdk.Common.IConfig.InitializationTimeoutMs">
             <summary>
             Gets the timeout in milliseconds for initialization operations.
-            </summary>
-        </member>
-        <member name="P:AllianceGamesSdk.Common.IConfig.InitializationRetries">
-            <summary>
-            Gets the number of initialization retry attempts.
             </summary>
         </member>
         <member name="P:AllianceGamesSdk.Common.IConfig.ConnectionTimeoutMs">
